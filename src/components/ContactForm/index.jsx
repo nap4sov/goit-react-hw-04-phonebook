@@ -1,34 +1,43 @@
 import { nanoid } from 'nanoid'
-import { Component } from 'react'
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import styles from './styles.module.scss'
 
-class ContactForm extends Component {
-    state = {
-        name: '',
-        number: ''
-    }
+export default function ContactForm({onSubmit}) {
+    const [name, setName] = useState('')
+    const [number, setNumber] = useState('')
 
-
-    handleInput = (event) => {
+    const handleInput = event => {
         const {name, value} = event.currentTarget
-        this.setState({[name]: value})
-    }
-    handleSubmit = (event) => {
-        event.preventDefault()
-        const contact = {
-            id: nanoid(),
-            ...this.state,
+        
+        switch (name) {
+            case 'name':
+                setName(value)
+                break;
+            case 'number':
+                setNumber(value)
+                break;
+        
+            default:
+                break;
         }
-        this.props.onSubmit(contact)
-        this.setState({name: '', number: ''})
     }
-    render() {
-        return (<form onSubmit={this.handleSubmit} className={styles.form}>
+
+    const handleSubmit = event => {
+        event.preventDefault()
+        const contact = { name, number, id: nanoid() }
+        onSubmit(contact)
+        setName('')
+        setNumber('')
+    }
+ 
+
+    return (
+        <form onSubmit={handleSubmit} className={styles.form}>
             <label className={styles.label}> Name
                 <input
-                    onChange={this.handleInput}
-                    value={this.state.name}
+                    onChange={handleInput}
+                    value={name}
                     className={styles.input}
                     type="text"
                     name="name"
@@ -39,8 +48,8 @@ class ContactForm extends Component {
             </label>
             <label className={styles.label}> Number
                 <input
-                    onChange={this.handleInput}
-                    value={this.state.number}
+                    onChange={handleInput}
+                    value={number}
                     className={styles.input}
                     type="tel"
                     name="number"
@@ -51,11 +60,8 @@ class ContactForm extends Component {
             </label>
             <button className={styles.button} type="submit">Add contact</button>
         </form>)
-    }
 }
 
 ContactForm.propTypes = {
     onSubmit: PropTypes.func.isRequired
 }
-
-export default ContactForm
