@@ -1,0 +1,24 @@
+.listItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.button {
+    padding: 5px 10px;
+    border-radius: 50%;
+    background-color: #efefef;
+    border: 1px solid #ccc;
+    font-weight: 700;
+    cursor: pointer;
+
+    transition: all 250ms linear;
+
+    &:hover,
+    &:focus {
+        background-color: red;
+        color: #efefef;
+        box-shadow: inset 0.5px 1px 2.5px 1px rgba(0, 0, 0, 0.2);
+    }
+}
